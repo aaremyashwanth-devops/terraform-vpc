@@ -20,5 +20,10 @@ resource "aws_subnet" "public" {
   availability_zone=local.two_zones[count.index]
   map_customer_owned_ip_on_launch=true
 
-  tags = local.final_public_subnet_tags
+  tags = merge(
+  local.common_tags,
+  {Name="${var.project}-${var.project}-${local.two_zones[count.index]}"},
+  var.public_subnet_tags
+
+ )
 }

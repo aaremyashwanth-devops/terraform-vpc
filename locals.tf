@@ -15,10 +15,10 @@ locals {
  )
  two_zones=slice(data.aws_availability_zones.available.names,0,2)
 
- final_public_subnet_tags=merge(
+ public_subnet_tags=merge(
   local.common_tags,
-  {Name="${var.project}-${var.project}"},
-  var.public_subnet_tags
-
+  var.public_subnet_tags,
+  {Name="${var.project}"}
+  
  )
 }
