@@ -12,3 +12,7 @@ variable "tags" {
   type = map
   default = {}
 }
+variable "igw" {
+  type = map
+  default = {}
+}
