@@ -22,8 +22,31 @@ resource "aws_subnet" "public" {
 
   tags = merge(
   local.common_tags,
-  {Name="${var.project}-${var.project}-${local.two_zones[count.index]}"},
+  {Name="${var.project}-${var.environment}-${local.two_zones[count.index]}"},
   var.public_subnet_tags
 
  )
+
+
 }
+
+ resource "aws_subnet" "private"{
+  count=length(var.private_subnet)
+   vpc_id = aws_vpc.main.id
+   cidr_block=var.private_subnet[count.index]
+   availability_zone=local.two_zones[count.index]
+   tags=merge(
+    local.common_tags,
+    {Name="${var.project}-${var.environment}-${local.two_zones[count.index]}"}
+   )
+ }
+
+ resource "aws_subnet" "database" {
+  count = length(var.database_subnet)
+   vpc_id=aws_vpc.main.id
+   cidr_block = var.database_subnet[count.index]
+   availability_zone=local.two_zones
+   tags =merge(local.common_tags,
+   {Name="${var.project}-${var.environment}-${local.two_zones[count.index]}"},
+   var.database_subnet_tags)
+ }
