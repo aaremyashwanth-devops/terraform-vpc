@@ -45,7 +45,7 @@ resource "aws_subnet" "public" {
   count = length(var.database_subnet)
    vpc_id=aws_vpc.main.id
    cidr_block = var.database_subnet[count.index]
-   availability_zone=local.two_zones
+   availability_zone=local.two_zones[count.index]
    tags =merge(local.common_tags,
    {Name="${var.project}-${var.environment}-${local.two_zones[count.index]}"},
    var.database_subnet_tags)
