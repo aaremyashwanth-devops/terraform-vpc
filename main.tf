@@ -22,7 +22,7 @@ resource "aws_subnet" "public" {
 
   tags = merge(
   local.common_tags,
-  {Name="${var.project}-${var.environment}-${local.two_zones[count.index]}"},
+  {Name="${var.project}-${var.environment}-public-${local.two_zones[count.index]}"},
   var.public_subnet_tags
 
  )
@@ -37,7 +37,7 @@ resource "aws_subnet" "public" {
    availability_zone=local.two_zones[count.index]
    tags=merge(
     local.common_tags,
-    {Name="${var.project}-${var.environment}-${local.two_zones[count.index]}"}
+    {Name="${var.project}-${var.environment}-private-${local.two_zones[count.index]}"}
    )
  }
 
@@ -47,6 +47,31 @@ resource "aws_subnet" "public" {
    cidr_block = var.database_subnet[count.index]
    availability_zone=local.two_zones[count.index]
    tags =merge(local.common_tags,
-   {Name="${var.project}-${var.environment}-${local.two_zones[count.index]}"},
+   {Name="${var.project}-${var.environment}-database-${local.two_zones[count.index]}"},
    var.database_subnet_tags)
+ }
+
+ resource "aws_route_table" "public_route_table" {
+   vpc_id =aws_vpc.main.id
+   tags = merge(
+    local.common_tags,
+    {Name="${var.project}-${var.environment}-public_route"},
+    var.public_route_table
+   )
+ }
+ resource "aws_route_table" "private_route_table" {
+   vpc_id =aws_vpc.main.id
+   tags = merge(
+    local.common_tags,
+    {Name="${var.project}-${var.environment}-private_route"},
+    var.private_route_table
+   )
+ }
+ resource "aws_route_table" "database_route_table" {
+   vpc_id =aws_vpc.main.id
+   tags = merge(
+    local.common_tags,
+    {Name="${var.project}-${var.environment}-database_route"},
+    var.database_route_table
+   )
  }
