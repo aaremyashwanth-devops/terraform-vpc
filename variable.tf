@@ -55,3 +55,11 @@ variable "database_route_table" {
   type = map
   default = {}
 }
+variable "elastic_ip_tags" {
+  type = map
+ default = {}
+}
+variable "nat_tags" {
+  type = map
+ default = {}
+}
