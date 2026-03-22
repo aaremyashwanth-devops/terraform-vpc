@@ -109,3 +109,23 @@ resource "aws_route" "data_route" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id = aws_nat_gateway.nat.id
 }
+
+resource "aws_route_table_association" "public" {
+  count=length(var.public_subnet_cidr)
+  subnet_id=aws_subnet.public[count.index].id
+  route_table_id=aws_route_table.public_route_table.id
+}
+
+resource "aws_route_table_association" "private"{
+count= length(var.private_subnet)
+subnet_id = aws_subnet.database[count.index].id
+route_table_id = aws_route_table.private_route_table.id
+
+
+}
+
+resource "aws_route_table_association" "database" {
+  count=length(var.database_subnet)
+  subnet_id = aws_route_table.database[count.index].id
+  route_table_id = aws_route_table.database_route_table.id
+}
