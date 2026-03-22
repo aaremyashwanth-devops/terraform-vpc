@@ -126,6 +126,6 @@ route_table_id = aws_route_table.private_route_table.id
 
 resource "aws_route_table_association" "database" {
   count=length(var.database_subnet)
-  subnet_id = aws_route_table.database[count.index].id
+  subnet_id = aws_subnet.database[count.index].id
   route_table_id = aws_route_table.database_route_table.id
 }
